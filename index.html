@@ -3,93 +3,142 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yan JiaLe</title>
+    <title>Yan JiaLe | 个人主页</title>
     <meta
       name="description"
-      content="Yan JiaLe 的个人主页，关注 model distillation、agent development 与研究记录。"
+      content="Yan JiaLe 的个人主页，关注模型蒸馏、智能体开发与研究记录。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="container">
+    <div class="page">
       <header class="site-header">
-        <div>
-          <h1>Yan JiaLe</h1>
-          <p class="subtitle">Tongji University · he/him</p>
-        </div>
+        <a class="brand" href="#top">Yan JiaLe</a>
         <nav class="nav">
-          <a href="#about">About</a>
-          <a href="#writing">Writing</a>
-          <a href="#contact">Contact</a>
+          <a href="#about">关于</a>
+          <a href="#research">研究兴趣</a>
+          <a href="#updates">最近更新</a>
+          <a href="#contact">联系</a>
         </nav>
       </header>
 
-      <main>
-        <section class="intro" id="about">
-          <p>
-            My name is Yan JiaLe, and I am an undergraduate student at Tongji
-            University. My interests lie in model distillation and agent
-            development.
+      <main id="top">
+        <section class="hero" id="about">
+          <p class="kicker">个人主页</p>
+          <h1>Yan JiaLe</h1>
+          <p class="lead">
+            同济大学本科生，当前主要关注模型蒸馏、智能体开发，以及研究工作流的整理与沉淀。
           </p>
-          <div class="links">
-            <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="mailto:2554205@tongji.edu.cn">Email</a>
-            <a href="https://www.tongji.edu.cn" target="_blank" rel="noreferrer">Tongji University</a>
+          <p class="summary">
+            这个页面用来持续记录我的研究方向、阶段性笔记和个人项目。整体会保持尽量简单，优先让信息本身清晰可读。
+          </p>
+
+          <dl class="hero-meta">
+            <div>
+              <dt>学校</dt>
+              <dd>Tongji University</dd>
+            </div>
+            <div>
+              <dt>地点</dt>
+              <dd>Shanghai, China</dd>
+            </div>
+            <div>
+              <dt>邮箱</dt>
+              <dd>
+                <a href="mailto:2554205@tongji.edu.cn">2554205@tongji.edu.cn</a>
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="section" id="research">
+          <div class="section-heading">
+            <h2>研究兴趣</h2>
+            <p class="section-note">目前重点放在模型能力迁移、Agent 实际工作流，以及把实验过程写成可复用记录。</p>
+          </div>
+
+          <div class="interest-list">
+            <article class="interest-item">
+              <h3>模型蒸馏</h3>
+              <p>关注教师模型知识向学生模型迁移的路径、训练目标设计，以及实验结果的可解释性。</p>
+            </article>
+            <article class="interest-item">
+              <h3>智能体开发</h3>
+              <p>对工具调用、上下文组织、失败恢复和真实环境中的稳定性问题更感兴趣，而不只是演示效果。</p>
+            </article>
+            <article class="interest-item">
+              <h3>研究记录</h3>
+              <p>希望把配置、假设、实验现象和结论整理成长期可回看的笔记，而不是一次性结果。</p>
+            </article>
           </div>
         </section>
 
-        <section class="section" id="writing">
-          <h2>Selected Notes</h2>
+        <section class="section" id="updates">
+          <div class="section-heading">
+            <h2>最近更新</h2>
+            <p class="section-note">这里会逐步替换成真实文章、项目说明或阶段性进展。</p>
+          </div>
 
-          <article class="entry">
-            <p class="meta">2026.03</p>
-            <h3>Why I started documenting distillation experiments more carefully</h3>
-            <p>
-              Distillation work usually has many moving parts. Writing down
-              assumptions, configs, and conclusions makes the results easier to
-              compare and reuse later.
-            </p>
-          </article>
+          <div class="update-list">
+            <article class="update-item">
+              <div class="update-head">
+                <time datetime="2026-03">2026.03</time>
+                <h3>开始系统整理模型蒸馏实验</h3>
+              </div>
+              <p>把实验配置、训练假设和结果判断拆开记录，减少之后重复回忆上下文的成本。</p>
+            </article>
 
-          <article class="entry">
-            <p class="meta">2026.03</p>
-            <h3>Why agent development feels more interesting than demos</h3>
-            <p>
-              I care more about how agents behave in real workflows than in
-              polished examples. Stability, tool use, and recovery matter a lot.
-            </p>
-          </article>
+            <article class="update-item">
+              <div class="update-head">
+                <time datetime="2026-03">2026.03</time>
+                <h3>持续记录关于智能体开发的笔记</h3>
+              </div>
+              <p>重点关注 Agent 在真实工作流中的稳定性、工具协作方式，以及失败时如何恢复。</p>
+            </article>
 
-          <article class="entry">
-            <p class="meta">2026.03</p>
-            <h3>Why I chose GitHub Pages for a personal site</h3>
-            <p>
-              I wanted something simple, stable, and easy to maintain. GitHub
-              Pages is lightweight enough to let the writing stay central.
-            </p>
-          </article>
+            <article class="update-item">
+              <div class="update-head">
+                <time datetime="2026-03">2026.03</time>
+                <h3>搭建个人主页并保持极简维护</h3>
+              </div>
+              <p>站点采用 GitHub Pages 发布，后续更新会直接在仓库根目录维护，不再保留多套页面副本。</p>
+            </article>
+          </div>
         </section>
 
         <section class="section" id="contact">
-          <h2>Contact</h2>
+          <div class="section-heading">
+            <h2>联系</h2>
+            <p class="section-note">如果你也在做相关方向，欢迎通过以下方式联系我。</p>
+          </div>
+
           <ul class="contact-list">
-            <li>GitHub: <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">YanJiaLe-TongJi</a></li>
-            <li>Email: <a href="mailto:2554205@tongji.edu.cn">2554205@tongji.edu.cn</a></li>
-            <li>Location: Shanghai, China</li>
+            <li class="contact-item">
+              <span>GitHub</span>
+              <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">YanJiaLe-TongJi</a>
+            </li>
+            <li class="contact-item">
+              <span>Email</span>
+              <a href="mailto:2554205@tongji.edu.cn">2554205@tongji.edu.cn</a>
+            </li>
+            <li class="contact-item">
+              <span>机构</span>
+              <a href="https://www.tongji.edu.cn" target="_blank" rel="noreferrer">Tongji University</a>
+            </li>
           </ul>
         </section>
       </main>
-    </div>
 
-    <footer class="footer">
-      <p>© <span id="current-year"></span> Yan JiaLe</p>
-    </footer>
+      <footer class="site-footer">
+        <p>© <span id="current-year"></span> Yan JiaLe</p>
+      </footer>
+    </div>
 
     <script src="./script.js"></script>
   </body>
