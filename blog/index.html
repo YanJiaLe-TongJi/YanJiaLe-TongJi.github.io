@@ -3,198 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yan JiaLe | Personal Blog</title>
+    <title>Yan JiaLe</title>
     <meta
       name="description"
-      content="Yan JiaLe 的个人博客，记录模型蒸馏、Agent 开发与个人研究笔记。"
+      content="Yan JiaLe 的个人主页，关注 model distillation、agent development 与研究记录。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Noto+Serif+SC:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="page-shell">
+    <div class="container">
       <header class="site-header">
-        <a class="brand" href="#top">YJ</a>
-        <nav class="site-nav">
-          <a href="#writing">文章</a>
-          <a href="#about">关于</a>
-          <a href="#contact">联系</a>
+        <div>
+          <h1>Yan JiaLe</h1>
+          <p class="subtitle">Tongji University · he/him</p>
+        </div>
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#writing">Writing</a>
+          <a href="#contact">Contact</a>
         </nav>
       </header>
 
-      <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow">PERSONAL BLOG</p>
-            <h1>把模型研究、Agent 开发和长期写作，连成一条持续更新的轨迹。</h1>
-            <p class="hero-text">
-              我是 Tongji University 的本科生，关注 model distillation 和 agent development，也会在这里记录实验、代码和长期积累下来的方法论。
-            </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#writing">开始阅读</a>
-              <a class="button button-secondary" href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">GitHub</a>
-            </div>
-          </div>
-
-          <aside class="hero-card">
-            <span class="hero-card-label">现在在做</span>
-            <ul>
-              <li>研究 model distillation</li>
-              <li>探索 agent development</li>
-              <li>把实验过程写成可复用经验</li>
-            </ul>
-          </aside>
-        </section>
-
-        <section class="section section-highlight">
-          <div class="highlight-grid">
-            <article>
-              <span>01</span>
-              <h2>研究记录</h2>
-              <p>把实验背景、方法选择和结果判断写得更清楚一些。</p>
-            </article>
-            <article>
-              <span>02</span>
-              <h2>Agent 实践</h2>
-              <p>记录我对 agent workflow、工具调用和工程细节的理解。</p>
-            </article>
-            <article>
-              <span>03</span>
-              <h2>长期表达</h2>
-              <p>让博客成为简历之外，更完整也更持续的个人主页。</p>
-            </article>
+      <main>
+        <section class="intro" id="about">
+          <p>
+            My name is Yan JiaLe, and I am an undergraduate student at Tongji
+            University. My interests lie in model distillation and agent
+            development.
+          </p>
+          <div class="links">
+            <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:2554205@tongji.edu.cn">Email</a>
+            <a href="https://www.tongji.edu.cn" target="_blank" rel="noreferrer">Tongji University</a>
           </div>
         </section>
 
         <section class="section" id="writing">
-          <div class="section-heading">
-            <p class="eyebrow">LATEST WRITING</p>
-            <h2>最近文章</h2>
-          </div>
+          <h2>Selected Notes</h2>
 
-          <div class="post-grid">
-            <article class="post-card">
-              <p class="meta">2026.03 · Distillation</p>
-              <h3>我为什么开始认真记录模型蒸馏实验</h3>
-              <p>
-                蒸馏实验通常变量很多，只有把过程写清楚，结果才真正值得复用和比较。
-              </p>
-              <a href="#post-1">阅读全文</a>
-            </article>
-
-            <article class="post-card">
-              <p class="meta">2026.03 · Agents</p>
-              <h3>我最近为什么对 Agent Development 更感兴趣</h3>
-              <p>
-                比起只看 demo，我更想理解 agent 在真实工作流里如何变得稳定、可控、好用。
-              </p>
-              <a href="#post-2">阅读全文</a>
-            </article>
-
-            <article class="post-card">
-              <p class="meta">2026.03 · Personal Site</p>
-              <h3>为什么我决定用 GitHub Pages 搭自己的个人博客</h3>
-              <p>
-                相比把内容散落在平台里，我更希望有一个可以长期维护的个人主页。
-              </p>
-              <a href="#post-3">阅读全文</a>
-            </article>
-          </div>
-        </section>
-
-        <section class="section article-list">
-          <article class="article-preview" id="post-1">
-            <p class="meta">模型蒸馏</p>
-            <h2>我为什么开始认真记录模型蒸馏实验</h2>
+          <article class="entry">
+            <p class="meta">2026.03</p>
+            <h3>Why I started documenting distillation experiments more carefully</h3>
             <p>
-              做模型蒸馏时，我越来越强烈地感受到，真正重要的不只是最终分数，而是中间每一个选择为什么成立。学生模型结构、教师输出、损失权重、训练轮次，这些因素叠在一起时，直觉很容易失真。
-            </p>
-            <p>
-              所以我开始把每次实验的配置、假设和结果都认真记下来。这样的记录不只是为了复现，更是为了逐步形成自己的研究判断。
+              Distillation work usually has many moving parts. Writing down
+              assumptions, configs, and conclusions makes the results easier to
+              compare and reuse later.
             </p>
           </article>
 
-          <article class="article-preview" id="post-2">
-            <p class="meta">Agent Development</p>
-            <h2>我最近为什么对 Agent Development 更感兴趣</h2>
+          <article class="entry">
+            <p class="meta">2026.03</p>
+            <h3>Why agent development feels more interesting than demos</h3>
             <p>
-              Agent 最吸引我的地方，不只是“它能做点什么”，而是它如何进入真实环境之后依然能稳定工作。工具调用、上下文组织、失败恢复，这些问题都比表面的演示更有意思。
-            </p>
-            <p>
-              我希望把这些观察慢慢写出来，既整理自己的理解，也留下未来可以继续迭代的起点。
+              I care more about how agents behave in real workflows than in
+              polished examples. Stability, tool use, and recovery matter a lot.
             </p>
           </article>
 
-          <article class="article-preview" id="post-3">
-            <p class="meta">个人主页</p>
-            <h2>为什么我决定用 GitHub Pages 搭自己的个人博客</h2>
+          <article class="entry">
+            <p class="meta">2026.03</p>
+            <h3>Why I chose GitHub Pages for a personal site</h3>
             <p>
-              我想要一个简单、稳定、长期属于自己的空间。GitHub Pages 对我来说足够轻，也足够直接，它不会把表达藏在平台规则后面。
-            </p>
-            <p>
-              这个博客会从一页开始，之后慢慢补上更多文章、项目和研究记录。它未必要一开始就很完整，但需要能够长期存在。
+              I wanted something simple, stable, and easy to maintain. GitHub
+              Pages is lightweight enough to let the writing stay central.
             </p>
           </article>
         </section>
 
-        <section class="section split-section" id="about">
-          <div class="section-heading">
-            <p class="eyebrow">ABOUT</p>
-            <h2>关于我</h2>
-          </div>
-
-          <div class="about-grid">
-            <div class="about-panel">
-              <p>
-                你好，我是 Yan JiaLe，Tongji University 本科生。目前主要关注 model distillation 和 agent development。
-              </p>
-              <p>
-                如果你也在做类似方向，欢迎通过 GitHub 或邮件联系我。这个博客会慢慢长成我的公开研究与写作空间。
-              </p>
-            </div>
-
-            <div class="about-panel stats-panel">
-              <div>
-                <strong>3</strong>
-                <span>示例文章</span>
-              </div>
-              <div>
-                <strong>1</strong>
-                <span>个人站点</span>
-              </div>
-              <div>
-                <strong>∞</strong>
-                <span>持续更新中</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section contact-section" id="contact">
-          <div class="section-heading">
-            <p class="eyebrow">CONTACT</p>
-            <h2>找到我</h2>
-          </div>
-          <p>
-            欢迎通过 GitHub 或邮箱联系我。
-          </p>
-          <div class="contact-links">
-            <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="mailto:2554205@tongji.edu.cn">2554205@tongji.edu.cn</a>
-            <a href="https://www.tongji.edu.cn" target="_blank" rel="noreferrer">Tongji University</a>
-          </div>
+        <section class="section" id="contact">
+          <h2>Contact</h2>
+          <ul class="contact-list">
+            <li>GitHub: <a href="https://github.com/YanJiaLe-TongJi" target="_blank" rel="noreferrer">YanJiaLe-TongJi</a></li>
+            <li>Email: <a href="mailto:2554205@tongji.edu.cn">2554205@tongji.edu.cn</a></li>
+            <li>Location: Shanghai, China</li>
+          </ul>
         </section>
       </main>
-
-      <footer class="site-footer">
-        <p>© <span id="current-year"></span> Yan JiaLe. Built for GitHub Pages.</p>
-      </footer>
     </div>
+
+    <footer class="footer">
+      <p>© <span id="current-year"></span> Yan JiaLe</p>
+    </footer>
 
     <script src="./script.js"></script>
   </body>
