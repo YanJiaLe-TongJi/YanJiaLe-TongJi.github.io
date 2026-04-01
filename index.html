@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -61,7 +61,6 @@
         <section class="section" id="research">
           <div class="section-heading">
             <h2>研究兴趣</h2>
-            <p class="section-note">目前重点放在模型能力迁移、Agent 实际工作流，以及把实验过程写成可复用记录。</p>
           </div>
 
           <div class="interest-list">
@@ -82,27 +81,42 @@
 
         <section class="section" id="writing">
           <div class="section-heading">
-            <h2>文章</h2>
-            <p class="section-note">这里收录已经发布的文章。后续你给我 Markdown 或 Word 原稿，我会继续整理后发布到站内。</p>
+            <h2>文章分类</h2>
           </div>
 
-          <div class="article-list">
-            <article class="article-card">
-              <p class="article-meta">2026.04 · 项目复盘</p>
-              <h3>
-                <a href="./articles/physics-report-generator-review.html">物理实验报告生成器开发随笔与经验回顾</a>
-              </h3>
-              <p>
-                从个人工具到 Web 应用的转向、项目上线后的真实转化率，以及“解决痛点不等于好产品”的一次复盘。
-              </p>
-            </article>
+          <div class="category-grid">
+            <section class="category-card">
+              <p class="category-label">Category 01</p>
+              <h3>学习笔记</h3>
+              <ul class="category-list">
+                <li class="empty-item">暂未发布</li>
+              </ul>
+            </section>
+
+            <section class="category-card">
+              <p class="category-label">Category 02</p>
+              <h3>项目回顾</h3>
+              <ul class="category-list">
+                <li>
+                  <a href="./articles/physics-report-generator-review.html">物理实验报告生成器开发随笔与经验回顾</a>
+                  <span>2026.04</span>
+                </li>
+              </ul>
+            </section>
+
+            <section class="category-card">
+              <p class="category-label">Category 03</p>
+              <h3>问题解决</h3>
+              <ul class="category-list">
+                <li class="empty-item">暂未发布</li>
+              </ul>
+            </section>
           </div>
         </section>
 
         <section class="section" id="updates">
           <div class="section-heading">
-            <h2>最近更新</h2>
-            <p class="section-note">这里会逐步替换成真实文章、项目说明或阶段性进展。</p>
+            <h2>更新记录</h2>
           </div>
 
           <div class="update-list">
@@ -143,7 +157,6 @@
         <section class="section" id="contact">
           <div class="section-heading">
             <h2>联系</h2>
-            <p class="section-note">如果你也在做相关方向，欢迎通过以下方式联系我。</p>
           </div>
 
           <ul class="contact-list">
