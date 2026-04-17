@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大一本科生 0 基础上手 LoRA 微调模型：两个月的经历和总结 | Yan JiaLe</title>
+    <meta
+      name="description"
+      content="记录从 0 基础接触模型训练，到完成 LoRA 微调、实验排障与阶段性反思的两个月经历。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="page article-page">
+      <header class="site-header">
+        <a class="brand" href="../index.html">Yan JiaLe</a>
+        <nav class="nav">
+          <a href="../index.html#about">关于</a>
+          <a href="../index.html#research">研究兴趣</a>
+          <a href="../index.html#writing">文章</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+      </header>
+
+      <main class="article-main">
+        <p class="back-link"><a href="../index.html#writing">返回首页文章列表</a></p>
+
+        <article class="prose">
+          <header class="article-header">
+            <p class="kicker">个人随笔</p>
+            <h1>大一本科生 0 基础上手 LoRA 微调模型：两个月的经历和总结</h1>
+            <p class="article-subtitle">从误打误撞加入项目，到真正开始理解训练、排障和实验设计</p>
+            <div class="article-info">
+              <time datetime="2026-04-09">2026 年 4 月 9 日</time>
+              <span>Word 原稿整理发布</span>
+            </div>
+          </header>
+
+          <p>
+            今天是 2026 年 4 月 9 日，距离我开始接触模型训练已经过了两个多月了，此文用于记录这两个月来做实验和学知识的历程和感想。其实一个月前就打算动笔的，但当时杂事太多，便一直拖到了现在。
+          </p>
+          <p>
+            能在大一就接触到模型训练，而且还有 8 张 L40 可以用，我觉得是很幸运的，也是我一开始未曾设想的。要说来这一切其实都源于我的一个疏忽。
+          </p>
+
+          <h2>误打误撞进入项目</h2>
+          <p>
+            去年 12 月，学校的 SITP 项目正式发布，参与立项即可享受分流加分。我为了这个加分，在学校系统上四处投递，但过了好几天也没有组要我。似乎过了快一周吧，一个定向面向大一学生的项目终于通过了我的申请，但同一时刻，我还在申请这个模型蒸馏的项目。
+          </p>
+          <p>
+            在被另一个项目录取后，我忘了撤下对模型蒸馏的申请。于是过了两天，负责的学长找到我的时候，我还颇感意外，方才想起是自己一时疏忽。
+          </p>
+          <p>
+            于是我就这么稀里糊涂地加入了模型蒸馏的实验小组。其实我现在也很奇怪为什么会要我，当时的我对于这方面可以说是 0 基础，唯一相关的经验是参加数学建模比赛时用 AI 训了个 CNN，以及在选修课上跑了几个简单的传统机器学习模型。所以我当时觉得这个项目能要我，估计本身也就是个混子项目，这样的话你混我混大家混，岂不也美哉。
+          </p>
+          <p>
+            就这样，在上学期末我唯一做的事情就是辅助制作了立项答辩的 PPT，随后便投身期末复习。直到寒假，我们组开了第一次组会，我才发现事情有些“不对劲”了，这个项目好像是认真的。
+          </p>
+
+          <h2>从 0 基础开始摸训练</h2>
+          <p>
+            一开始给我们分配的是 4 张 L40 的节点，用的是负责指导我们的一位博后的账号登录学校计算中心。在最初的两周，考虑到我是 0 基础，主要是在让我熟悉用 VS Code 远程连接操作服务器，掌握一些常用的 Linux 命令，初步学习 Transformer 的原理、PyTorch 以及 Hugging Face Transformers 库的使用方法。
+          </p>
+          <p>
+            实话实说，我觉得当时掌握得并不好，原理一知半解，API 也调不明白。虽然我只学了个皮毛，两周后，我便开始了我的第一个任务：用 teacher 模型生成的数据，LoRA 微调 Qwen32B 模型。
+          </p>
+          <p>
+            然后我就傻眼了。新手村都还没出，直接干这个工作吗？没办法，只能硬着头皮上了，大不了把各种 AI 工具都用上。
+          </p>
+
+          <h2>第一次真正跑通微调</h2>
+          <p>
+            于是，在我奋战一个晚上后，不出意外地失败了。4 卡跑 bf16 精度的 32B 模型，需要用 DeepSpeed ZeRO-3 切分模型参数、优化器状态和梯度。但当时我不知道，在我们那个环境下，需要显式指定
+            <code>dschf = HfDeepSpeedConfig(DS_CONFIG)</code>，否则在模型初始化阶段就没法正确接管加载，会直接导致 OOM。
+          </p>
+          <p>
+            而且当时我还没“开智”，Cursor 连不上学校服务器，我只能把代码 clone 到自己电脑上在本地修改后再推回去，或者直接问网页版 AI。环境不一致，修了一晚上都没修好。
+          </p>
+          <p>
+            本着“世上无难事，只要肯放弃”的精神，我在挣扎两天后果断选择了用 bitsandbytes 量化模型，用简单的 DDP 跑。再经过 8 小时等待后，我终于跑通了我人生中第一个模型微调。
+          </p>
+          <p>
+            具体的技术细节就不继续展开了，详情请参阅技术文档。之后机器加到了 8 张 L40，又陆陆续续跑了 70B 的微调和测评，发现效果并不理想。
+          </p>
+
+          <h2>第一次不只是做 dirty work</h2>
+          <p>
+            在解决这个问题的过程中，我终于做了一点 dirty work 以外的工作。我猜测 SFT 效果不佳，是因为传统 CE 只会让模型学会模仿易学的风格，难以学到真实推理能力。最终，我在 ICML 2024 论文 KPOD 的基础上吸取核心思想，用加权 CE 的方式大幅提高了 SFT 结果。
+          </p>
+          <p>
+            虽然没什么原创，但这是我第一次不是按照学长的安排按部就班地跑训练，而是独立解决了一个小问题。从我自己的角度而言，这件事还是有点小骄傲的。
+          </p>
+          <p>
+            现在，等待集中式蒸馏最后收尾之后，就要开启下一阶段，也是真正核心中的核心部分，联邦蒸馏实验。对我来说，这又是一个全新的领域。
+          </p>
+
+          <h2>两个月后的几点反思</h2>
+          <ol>
+            <li>
+              要善用 AI。AI 的出现确实颠覆了学习范式，不需要先熟悉 PyTorch、Transformer 这些库的写法，只要向 AI 描述你要实现的功能，不会写代码也能轻松跑训练。选对 AI 工具也很重要。后来我找到了用 Codex 走本机终端连接服务器的方法，修改代码的效率直接上升了好几个数量级；要是一开始就用这个，会节省不少时间。
+            </li>
+            <li>
+              要夯实基础。无论做什么方向，对模型底层原理的理解都是不可或缺的。对 Transformer 的结构、attention 的原理及计算方式、FFN、激活函数、损失函数等底层原理，一定要有深入的理解。不理解原理，调再多参数也没有意义。
+            </li>
+            <li>
+              一定的代码能力是必须的。虽然 AI 可以完成大部分代码写作，但关键的逻辑必须审查，一些难以解决的 bug 也需要人工介入，这也是我目前最为薄弱的部分。我打算在接下来两个月着重提高深度学习方面的代码能力，至少做到熟练使用 API。
+            </li>
+          </ol>
+
+          <h2>写在最后</h2>
+          <p>
+            总的来说，虽是误打误撞，这段经验还是很宝贵的。它让我有机会长时间使用八卡机器，跑训练、做实验。这种实践式的学习也让我成长不少，两个月的时间里，我从几乎 0 基础，到现在对底层原理、实验流程都有了一定的了解，也正式确立了对大模型方向的兴趣。
+          </p>
+          <p>
+            这个项目还会持续两个月。在接下来的阶段里，我的计划是一方面初步接触联邦学习，另一方面多自己写点代码，复现一些简单的论文，夯实理论与实践基础。争取在大二正式加入课题组，从只做实验迈向更深度地参与方案设计。
+          </p>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>© <span id="current-year"></span> Yan JiaLe</p>
+      </footer>
+    </div>
+
+    <script src="../script.js"></script>
+  </body>
+</html>
