@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大模型探秘：揭开大模型的神秘面纱 | Yan JiaLe</title>
+    <meta
+      name="description"
+      content="科普短文系列序言，从 AI 热潮、使用焦虑与大模型黑盒问题出发，解释为什么普通人也需要理解大模型原理。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="page article-page">
+      <header class="site-header">
+        <a class="brand" href="../index.html">Yan JiaLe</a>
+        <nav class="nav">
+          <a href="../index.html#about">关于</a>
+          <a href="../index.html#research">研究兴趣</a>
+          <a href="../index.html#writing">文章</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+      </header>
+
+      <main class="article-main">
+        <p class="back-link"><a href="../index.html#writing">返回首页文章列表</a></p>
+
+        <article class="prose">
+          <header class="article-header">
+            <p class="kicker">科普短文</p>
+            <h1>大模型探秘：揭开大模型的神秘面纱</h1>
+            <p class="article-subtitle">系列序言</p>
+            <div class="article-info">
+              <time datetime="2026-04-17">2026 年 4 月 17 日</time>
+              <span>Word 原稿整理发布</span>
+            </div>
+          </header>
+
+          <p>
+            2022 年 11 月，ChatGPT 3.5 横空出世，大语言模型（Large Language Model，LLM）正式进入了人们的日常生活。不过对于我们国内的用户来说，受制于某些原因，相较于 GPT，2025 年 DeepSeek 的推出，更标志着大模型爆发式发展的起点。
+          </p>
+          <p>
+            过去的一年，在应用领域，AI 的发展可谓神速。AI 不再局限于网页上的对话框，Cursor、Claude Code、Codex，各式 AI 工具迅速改变了编程工作。而在今年开年，OpenClaw 一炮而红，人们争相去“养虾”，各大厂也是纷纷跟进，推出自己的 claw 产品，在 agent 赛道卷生卷死。各种概念更是隔几天就推出一个，prompt 工程、skill、MCP、memory、harness……自媒体也借此制造焦虑，似乎一个概念不懂，在 AI 时代就掉队了。更有甚者，吹捧 AGI（通用人工智能）就在眼前，人类文明即将立地飞升。
+          </p>
+          <p>
+            面对科技日新月异的进步和互联网上这些令人眼花缭乱的信息，我们该如何分辨哪些是可见的未来中真正可落地的技术，哪些只是资本的炒作？AI 可能出现“幻觉”，这是为什么？我们又该如何正确对待和使用 AI？回答这一切问题的基础，是对大模型技术有一定的理解。
+          </p>
+          <p>
+            我们现在每天都在使用 AI，但大部分人对 AI 的理解都只是停留在一知半解的程度。如此深入日常生活、并对人类社会产生重大影响的一个事物，对大多数人来说仍然是黑盒，这其实是相当可怕的。
+          </p>
+
+          <h2>为什么普通人也需要懂一点 AI</h2>
+          <p>
+            或许有人会有疑问：单纯地使用 AI，真的需要懂 AI 吗？就拿电脑手机来说，有几个人真正懂它们的原理？大家不也都在正常使用吗？
+          </p>
+          <p>
+            对此我的回答是：至少以目前的角度来看，需要，而且是很需要。这并不意味着你需要成为 AI 专家，但一定程度的了解是必须的。
+          </p>
+          <p>
+            AI 技术革命和以往的技术革命有一个很大的区别。以往的技术革命交付到个人手上的更多是产品，而 AI 革命让工具直接到了每个人手中。各种电器，还有电脑，不也是生产工具吗？不懂电机原理，照样可以用电锯锯木头；不懂 CPU 原理，照样可以用电脑写文档。这是因为这些工具依然有很强的产品属性，有对应的使用说明，不懂原理照着说明就能用。
+          </p>
+          <p>
+            但大模型本身的工具属性极强，而且它的“使用说明”其实就在其底层原理里。因此，不了解 AI 的原理，却放心地让 AI 来完成任务，就好比不知道电锯该怎么用，就拿着它胡乱乱锯，这很可能是一场彻头彻尾的灾难。
+          </p>
+
+          <h2>这个系列会写什么</h2>
+          <p>
+            本系列短文将带大家拆解 AI 的底层原理。宗旨是尽量避免晦涩的专业术语和数学公式，以通俗易懂的方式，一步步揭开大模型神秘的面纱，让更多人都能对底层原理有一个基本的了解。
+          </p>
+          <p>
+            最后，笔者水平有限，难免会有错漏之处，后续如果发现问题，我也会及时更正。
+          </p>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>© <span id="current-year"></span> Yan JiaLe</p>
+      </footer>
+    </div>
+
+    <script src="../script.js"></script>
+  </body>
+</html>
