@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>一次 KPOD 训练反转的踩坑记录：先看数据，再谈方法 | Yan JiaLe</title>
+    <meta
+      name="description"
+      content="复盘一次从 KPOD 看似有效，到清洗数据后发现 plain CE 更强的模型训练踩坑经历。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="page article-page">
+      <header class="site-header">
+        <a class="brand" href="../index.html">Yan JiaLe</a>
+        <nav class="nav">
+          <a href="../index.html#about">关于</a>
+          <a href="../index.html#research">研究兴趣</a>
+          <a href="../index.html#writing">文章</a>
+          <a href="../index.html#contact">联系</a>
+        </nav>
+      </header>
+
+      <main class="article-main">
+        <p class="back-link"><a href="../index.html#writing">返回首页文章列表</a></p>
+
+        <article class="prose">
+          <header class="article-header">
+            <p class="kicker">问题解决</p>
+            <h1>一次 KPOD 训练反转的踩坑记录：先看数据，再谈方法</h1>
+            <p class="article-subtitle">从“换损失涨点”到“干净数据上 CE 反而更强”的一次复盘</p>
+            <div class="article-info">
+              <time datetime="2026-05-25">2026 年 5 月 25 日</time>
+              <span>训练实验复盘</span>
+            </div>
+          </header>
+
+          <p>
+            在上一篇关于 LoRA 微调经历的文章里，我曾经写到：自己在 ICML 2024 论文
+            <a href="https://arxiv.org/abs/2405.16064" target="_blank" rel="noreferrer">KPOD</a>
+            的启发下，用加权 CE 的方式让 SFT 结果有了明显提高。当时这个判断并不是凭空来的，早期实验确实给出了一个看起来很漂亮的现象：在同一批 public mix v1 数据上，32B + KPOD 的 old eval 明显强过无 KPOD 的 CE 对照。
+          </p>
+          <p>
+            但后面继续排查、补测和重新构造数据之后，我发现这件事没有那么简单。更准确地说，当时的“涨点”并不能说明 KPOD 本身稳定优于标准 CE，它更像是一次被脏数据、评测口径和简化实现共同放大的假阳性。
+          </p>
+
+          <h2>一开始，KPOD 看起来确实有效</h2>
+          <p>
+            KPOD 论文的核心动机很直观：传统 CoT distillation 会让学生模型平均模仿整段 reasoning，但 reasoning 里的 token 重要性并不一样，而且一开始就学习完整推理链，也不符合从易到难的学习顺序。因此论文提出了两个关键设计：对关键 token 加权，以及从最后的推理步骤逐步扩展到完整 rationale。
+          </p>
+          <p>
+            我当时并没有完整复现论文方法，而是吸取了其中“关键步骤更重要”的思想，做了一个简化的加权 CE/KPOD 变体。早期结果看起来很鼓舞人心：32B 在 public mix v1 数据上，KPOD 版本 old MMLU 达到 83.55%，GSM8K 达到 94.50%；同数据的 no-KPOD/CE 对照只有 old MMLU 74.27%，GSM8K 89.00%。这就是我上一篇文章里说“用加权 CE 大幅提高了 SFT 结果”的背景。
+          </p>
+          <p>
+            现在回头看，这个结论最大的问题是：它没有把数据质量、训练实现和评测口径拆干净。public mix v1 虽然规模不小，有 17486 行，覆盖 GSM8K、CommonsenseQA、MATH、OpenBookQA、ARC-Challenge 等来源，但它并不是一批真正干净、统一、目标一致的数据。
+          </p>
+
+          <h2>问题真正出在数据上</h2>
+          <p>
+            后续排查发现，早期训练数据至少有几个问题。第一，格式并不统一，不同来源的字段、答案形式和 CoT 风格混在一起。第二，没有足够严格的错题过滤和答案一致性校验，模型学到的并不都是可靠推理。第三，数据分布和目标评测领域并不完全一致，尤其是想提高专业 MCQ、工程/商业、数学推理时，混入一些看似相关但形态差异很大的数据，反而会造成能力漂移。
+          </p>
+          <p>
+            最典型的负例是 32B 的 math500safe 增强数据。它把 public mix v1 从 17486 行扩到 22412 行，额外加入了 4926 行看似更偏数学的数据。但训练后 MATH500 strict 只有 29.00%。这个结果很刺眼，也很有教育意义：并不是“数学数据越多越好”，如果数据分布、答案质量和推理格式不对，扩量反而会把模型带偏。
+          </p>
+          <p>
+            从这个阶段开始，我才真正意识到，训练效果不理想时，第一反应不应该是继续堆损失函数、正则项、训练 trick，而应该先问一个更朴素的问题：这批数据到底干不干净？它和我要优化的目标到底是不是同一个方向？
+          </p>
+
+          <h2>干净 A/B 把结论反过来了</h2>
+          <p>
+            真正改变判断的是后面的 step-clean 数据。我们重新构造了一批更高质量的数学训练数据：候选 4200 条，生成成功 3844 条，打分成功 3838 条，最后清洗保留 2807 条。相比早期 public mix，这批数据更集中，答案清洗更严格，也更接近 MATH500 这类数学推理目标。
+          </p>
+          <p>
+            在 70B 上，同一批 math step-clean 数据、同样 LoRA r=32、alpha=64 的对照里，plain CE 的 MATH500 strict 是 65.00%，V4 复判后是 81.50%；KPOD r32 的 MATH500 strict 只有 48.00%，V4 复判后是 70.50%。也就是说，CE 比 KPOD 高了 17 个 strict 点，复判后仍高 11 个点。
+          </p>
+          <p>
+            32B 上后来也补齐了同类证据。math-only CE 在 MATH500-200 上 strict 为 57.50%，V4 复判后 81.00%；同数据 KPOD strict 为 47.50%，V4 复判后 60.50%。后续全口径补测里，32B math-only CE 的 MATH500-500 strict 达到 58.40%，V4 复判后 77.40%，HumanEval exec 也达到 73.78%。这些结果说明，在更干净、更聚焦的数据上，plain CE 不但没有输，反而是更强、更稳定的选择。
+          </p>
+          <p>
+            更进一步，32B fullplan CE r32 v1 用 11182 行综合数据重新训练后，old MMLU 达到 84.69%，GSM8K-500 为 92.80%，MMLU-Pro business/engineering 合计 58.02%，MATH500 strict/V4 为 57.00%/70.60%，HumanEval exec 为 73.17%。相比原来的 32B KPOD780 baseline，fullplan CE 在 old MMLU、HumanEval、B/E 合计和 MATH500 上都更强。到这里，主线结论已经很清楚：当前更值得继续的不是 KPOD，而是 LoRA + plain CE + 高质量可验证数据。
+          </p>
+
+          <h2>为什么早期 KPOD 会“看起来有效”</h2>
+          <p>
+            我现在倾向于这样理解早期现象：我实现的简化版加权 CE/KPOD 会提高答案和关键计算步骤的权重。在脏数据上，这种机制可能偶然起到了一点类似“正则过滤”的作用。模型被迫更多关注答案附近和计算关键处，而不是平均学习整段质量参差不齐的 CoT，于是它在 old eval 上看起来涨了点。
+          </p>
+          <p>
+            但这并不代表方法本身更优。换到干净数据后，数据噪声减少，标准 CE 已经能够稳定学习高质量推理链。此时再引入不完整的加权和渐进策略，反而可能破坏梯度稳定性。尤其是逐渐展示完整 CoT 的方式，如果课程顺序、token 权重和任务分布没有设计好，就可能和一般的学习顺序相冲突，让模型在已经干净的监督信号上学得更别扭。
+          </p>
+          <p>
+            换句话说，早期 KPOD 的收益更像是“方法替数据质量做了一点兜底”，而不是“方法真的解决了推理训练”。当数据本身足够干净时，plain CE 这个看起来朴素的基线反而更可靠。
+          </p>
+
+          <h2>这次踩坑给我的教训</h2>
+          <p>
+            第一，训练不理想时，优先查数据。格式不一致、答案不可靠、领域不匹配、评测泄露风险、长 CoT 质量不稳，这些问题的影响往往比损失函数选择更大。数据脏的时候，复杂方法也许会碰巧涨点，但这个涨点很可能不可迁移。
+          </p>
+          <p>
+            第二，所有“方法有效”的判断都要尽量做干净 A/B。至少要做到同一基座、同一数据、同一 LoRA rank、同一评测口径。早期把旧数据、低 rank、不同脚本和不同 checkpoint 混在一起比较，很容易把偶然现象写成方法结论。
+          </p>
+          <p>
+            第三，标准 CE 基线不能被轻视。很多时候，plain CE 不是落后的默认选项，而是最强的 sanity check。一个新方法如果不能在干净数据和严格对照下稳定赢过 CE，就不应该轻易成为主线。
+          </p>
+          <p>
+            第四，数据质量比花哨训练方式重要得多。与其继续叠损失、正则、KL、OPD 或各种复杂训练流程，不如先把题源、答案、格式、领域、泄露审计和错题过滤做好。对我这次实验来说，真正把结果带上去的不是更复杂的方法，而是更可靠的数据。
+          </p>
+
+          <h2>写在最后</h2>
+          <p>
+            这篇文章某种意义上是对上一篇的修正。那时我确实跑出了一个看起来很漂亮的结果，也确实因此很兴奋。但现在回过头看，我更应该记住的不是“我做了一个比 CE 更好的损失”，而是“我差点把数据问题误判成方法创新”。
+          </p>
+          <p>
+            这大概也是做实验最有价值、也最折磨人的地方：结果会不断推翻你刚刚建立起来的解释。能被推翻其实是好事，因为它逼着你把变量拆开，把证据补齐，然后承认一个更朴素但更接近事实的结论。
+          </p>
+          <p>
+            对我现在来说，这个结论就是：训练前先敬畏数据。数据不干净，方法越复杂，越可能只是在复杂地放大噪声；数据足够好，最普通的 CE 也能给出很强的答案。
+          </p>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>© <span id="current-year"></span> Yan JiaLe</p>
+      </footer>
+    </div>
+
+    <script src="../script.js"></script>
+  </body>
+</html>
